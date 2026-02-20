@@ -1,10 +1,37 @@
-import {React, useState} from 'react'
+import { React, useState } from 'react'
+import { Link } from 'react-router-dom';
+
+import GenderCheckbox from './GenderCheckbox';
+import useSignup from '../../hooks/useSignup';
 
 const SignUp = () => {
+    const [inputs, setInputs] = useState({
+        'fullName': '',
+        'username': '',
+        'password': '',
+        'confirmPassword': '',
+        'gender': ''
+    })
+
+    const {loading, signup} = useSignup()
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const show = <img src="https://img.icons8.com/?size=100&id=NgaxRjKJKGk4&format=png&color=FFFFFF" alt="" srcset="" width={25} />
     const hide = <img src="https://img.icons8.com/?size=100&id=986&format=png&color=FFFFFF" alt="" srcset="" width={25} />
+
+    const handleCheckboxChange = (gender) => {
+        setInputs({...inputs, gender})
+    }
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(inputs);
+        e.preventDefault();
+        await signup(inputs)
+    };
+
+
     return (
         <div className='flex flex-col items-center justify-center mx-auto min-w-96'>
             <div className="w-full max-w-md p-6 rounded-lg shadow-md bg-white/10 backdrop-blur-lg border border-white/20">
@@ -12,14 +39,20 @@ const SignUp = () => {
                     SignUp
                     <span className='text-blue-500'> ChatApp</span>
                 </h1> <br />
-                <form className='flex flex-col w-full justify-center'>
+                <form onSubmit={handleSubmit} className='flex flex-col w-full justify-center'>
                     <div className='p-2'>
                         <label className='text-xl'>Name</label>
-                        <input type="text" placeholder="Enter Name" className="input" />
+                        <input type="text" placeholder="Enter Name" className="input"
+                            value={inputs.fullName}
+                            onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
+                        />
                     </div>
                     <div className='p-2'>
                         <label className='text-xl'>Username</label>
-                        <input type="text" placeholder="Enter Username" className="input" />
+                        <input type="text" placeholder="Enter Username" className="input"
+                            value={inputs.username}
+                            onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+                        />
                     </div>
                     <div className='p-2'>
                         <label className='text-xl'>Password</label>
@@ -28,6 +61,8 @@ const SignUp = () => {
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Enter Password"
                                 className="input w-full pr-10"
+                                value={inputs.password}
+                                onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
                             />
 
                             <span
@@ -36,7 +71,7 @@ const SignUp = () => {
                             >
                                 {showPassword ? show : hide}
                             </span>
-                        </div>  
+                        </div>
                     </div>
                     <div className='p-2'>
                         <label className='text-xl'>Confirm Password</label>
@@ -45,6 +80,8 @@ const SignUp = () => {
                                 type={showConfirmPassword ? "text" : "password"}
                                 placeholder="Enter Password"
                                 className="input w-full pr-10"
+                                value={inputs.confirmPassword}
+                                onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
                             />
 
                             <span
@@ -53,10 +90,11 @@ const SignUp = () => {
                             >
                                 {showConfirmPassword ? show : hide}
                             </span>
-                        </div>  
+                        </div>
                     </div>
+                    <GenderCheckbox onCheckboxChange = {handleCheckboxChange} selectedGender={inputs.gender} />
                     <div className='ml-4'>
-                        <a href="Login" className='text-sm hover:text-blue-500 mt-2'>Already Have an account?</a>
+                        <Link to={"/login"} className='text-sm hover:text-blue-500 mt-2'>Already Have an account?</Link>
                     </div>
                     <div className='p-4 flex text-center justify-center'>
                         <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl w-full h-8 text-lg hover:bg-blue-500 hover:border-white active:border-white">SignUp</button>
