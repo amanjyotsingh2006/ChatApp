@@ -15,7 +15,7 @@ const Conversations = () => {
           emoji={getRandomEmoji()}
           lastIdx={idx === conversations.length}
         />
-      ))}; 
+      ))}
 
       {loading ? <span className='loading loading-spinner mx-auto'></span> : null}
     </div>
