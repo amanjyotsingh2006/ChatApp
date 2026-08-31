@@ -4,10 +4,10 @@ import useGetConversation from '../../hooks/useGetConversation'
 import { getRandomEmoji } from '../../utils/emojis';
 
 const Conversations = () => {
-  const {loading, conversations} = useGetConversation();
-  console.log("CONVERSATIONS:", conversations); 
+  const { loading, conversations } = useGetConversation();
+
   return (
-    <div className='py-2 flex flex-col overflow-auto'>
+    <div className='flex-1 min-h-0 py-2 flex flex-col gap-1 overflow-y-auto'>
       {conversations.map((conversation, idx) => (
         <Conversation
           key={conversation._id}
@@ -17,28 +17,13 @@ const Conversations = () => {
         />
       ))}
 
-      {loading ? <span className='loading loading-spinner mx-auto'></span> : null}
+      {loading ? <span className='loading loading-spinner mx-auto mt-4'></span> : null}
+
+      {!loading && conversations.length === 0 && (
+        <p className='text-center text-sm text-gray-500 mt-6'>No conversations yet</p>
+      )}
     </div>
   )
 }
 
 export default Conversations
-
-
-// Starter code
-// import React from 'react'
-// import Conversation from './Conversation'
-
-// const Conversations = () => {
-//   return (
-//     <div>
-//       <Conversation />
-//       <Conversation />
-//       <Conversation />
-//       <Conversation />
-//       <Conversation />
-//     </div>
-//   )
-// }
-
-// export default Conversations
